@@ -7,13 +7,14 @@ public enum SortSizes {
     HUNDRED(100, "100", 10, 2, 5.0),
     TWO_HUNDRED_AND_FIFTY(250, "250", 5, 1, 3.0),
     FOUR_HUNDRED_AND_FIFTY(450, "450", 3, 0, 1.5),
-    SIX_HUNDRED_AND_FIFTY(650, "650", 2, 0, 1.3);
+    SIX_HUNDRED_AND_FIFTY(650, "650", 2, 0, 1.3),
+    THOUSAND_AND_THREE_HUNDRED(1300, "1300", 1, 0, 0.6);
 
     private int mSize;
     private String mName;
     private int mWidth;
     private int mSpacing;
-    private double mHScale;
+    private double mHScale; // Used to scale up or down the rectangles displayed
     private int mDelayMS;
 
     SortSizes(int size, String name, int width, int spacing, double hScale) {

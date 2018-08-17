@@ -68,6 +68,7 @@ public class SortingService extends Service<Void> {
             @Override
             protected Void call() throws Exception {
                 algorithm.sort(context, list, delayMS);
+                mLastAccess.setFill(Color.BLACK);
                 return null;
             }
         };

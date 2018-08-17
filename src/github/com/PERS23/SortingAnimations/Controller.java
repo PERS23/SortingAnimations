@@ -86,16 +86,12 @@ public class Controller implements Initializable {
         });
     }
 
-    public Controller() {
-
-    }
-
     @FXML
     public void handleNewListRequest() {
         mSortingService.updateSortList(generateRandomList());
     }
 
-    /* Simply generates a random number n times and uses that random number to generate the rectangle size */
+    /* Simply generates a random number (up to size n) n times and uses that random number to generate the rectangle size */
     private List<Pair<Integer, Rectangle>> generateRandomList() {
         List<Pair<Integer, Rectangle>> result = new ArrayList<>();
         Random gen = new Random();
@@ -104,7 +100,7 @@ public class Controller implements Initializable {
         list_container.getChildren().clear();                                      // Clear the current list from the UI
         for (int i = 0; i < choice.getSize(); i++) {
             int rand = gen.nextInt(choice.getSize());
-            Rectangle node = new Rectangle(choice.getWidth(), rand * choice.getHScale());
+            Rectangle node = new Rectangle(choice.getWidth(), rand * choice.getHScale()); // Height is completely dependent on the random number generated
 
             list_container.getChildren().add(node);
             node.setLayoutX(i * (choice.getWidth() + choice.getSpacing()));     // X position directly corresponds to the current index
