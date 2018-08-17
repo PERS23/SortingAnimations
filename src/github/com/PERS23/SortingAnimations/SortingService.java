@@ -2,57 +2,78 @@ package github.com.PERS23.SortingAnimations;
 
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
 import java.util.List;
 
 public class SortingService extends Service<Void> {
-    private List<Pair<Integer, Node>> mSortList;
+    private List<Pair<Integer, Rectangle>> mSortList;
     private SortingAlgorithm mSortingAlgorithm;
+    private int mDelayMS;
 
-    private IntegerProperty mSwapsMade = new SimpleIntegerProperty();
-    private IntegerProperty mComparisonsMade = new SimpleIntegerProperty();
-    private IntegerProperty mArrayAccesses = new SimpleIntegerProperty();
+    // These properties are hosted in the controller, and to update them we have to request it with platform.runlater()
+    private IntegerProperty mComparisonsMade;
+    private IntegerProperty mSwapsMade;
+    private IntegerProperty mArrayAccessesMade;
 
-    public SortingService(List<Pair<Integer, Node>> sortList, SortingAlgorithm sortAlgorithm) {
+    private Rectangle mLastAccess;
+
+    public SortingService(List<Pair<Integer, Rectangle>> sortList, SortingAlgorithm sortingAlgorithm, int delayMS,
+                          IntegerProperty comparisonsMade, IntegerProperty swapsMade, IntegerProperty arrayAccessesMade) {
         mSortList = sortList;
-        mSortingAlgorithm = sortAlgorithm;
+        mSortingAlgorithm = sortingAlgorithm;
+        mDelayMS = delayMS;
+        mComparisonsMade = comparisonsMade;
+        mSwapsMade = swapsMade;
+        mArrayAccessesMade = arrayAccessesMade;
+        mLastAccess = null;
     }
 
-    public void updateSortList(List<Pair<Integer, Node>> sortList) {
+    public void updateSortList(List<Pair<Integer, Rectangle>> sortList) {
         mSortList = sortList;
-        mComparisonsMade.set(0);
-        mSwapsMade.set(0);
-        mArrayAccesses.set(0);
+        resetCounts();
     }
 
     public void updateSortAlgorithm(SortingAlgorithm sortAlgorithm) {
         mSortingAlgorithm = sortAlgorithm;
-        mComparisonsMade.set(0);
-        mSwapsMade.set(0);
-        mArrayAccesses.set(0);
+        resetCounts();
+    }
+
+    public void updateDelay(int delayMS) {
+        mDelayMS = delayMS;
+        resetCounts();
+    }
+
+    private void resetCounts() {
+        Platform.runLater(() -> {
+            mArrayAccessesMade.set(0);
+            mSwapsMade.set(0);
+            mComparisonsMade.set(0);
+        });
     }
 
     @Override
     protected Task<Void> createTask() {
         final SortingService context = this;
         final SortingAlgorithm algorithm = mSortingAlgorithm;
-        final List<Pair<Integer, Node>> list = mSortList;
+        final List<Pair<Integer, Rectangle>> list = mSortList;
+        final int delayMS = mDelayMS;
 
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                algorithm.sort(context, list);
+                algorithm.sort(context, list, delayMS);
                 return null;
             }
         };
     }
 
-    public void requestUISwap(Node a, Node b) {
+    public void requestUISwap(Rectangle a, Rectangle b) {
         Platform.runLater(() -> {
             Double tmp = a.getLayoutX();
             a.setLayoutX(b.getLayoutX());
@@ -61,39 +82,35 @@ public class SortingService extends Service<Void> {
         });
     }
 
-    public void incrementSwapsMade() {
-        mSwapsMade.set(getSwapsMade() + 1);
+    public void incrementArrayAccesses() {
+        Platform.runLater(() -> {
+            mArrayAccessesMade.set(mArrayAccessesMade.getValue() + 1);
+        });
+    }
+
+    /* Used to highlight current accesses as red */
+    public void notifyUIArrayAccess(Rectangle currentAccess) {
+        Platform.runLater(() -> {
+            if (mLastAccess != null) {
+                mLastAccess.setFill(Color.BLACK);
+            }
+        });
+        Platform.runLater(() -> { // Staggering them like this so there's some residue red
+            currentAccess.setFill(Color.RED);
+            mLastAccess = currentAccess;
+        });
     }
 
     public void incrementComparisonsMade() {
-        mComparisonsMade.set(getComparisonsMade() + 1);
+        Platform.runLater(() -> {
+            mComparisonsMade.set(mComparisonsMade.getValue() + 1);
+        });
     }
 
-    public void incrementArrayAccesses() {
-        mArrayAccesses.set(getArrayAccesses() + 1);
+    public void incrementSwapsMade() {
+        Platform.runLater(() -> {
+            mSwapsMade.set(mSwapsMade.getValue() + 1);
+        });
     }
 
-    public int getSwapsMade() {
-        return mSwapsMade.get();
-    }
-
-    public IntegerProperty swapsMadeProperty() {
-        return mSwapsMade;
-    }
-
-    public int getComparisonsMade() {
-        return mComparisonsMade.get();
-    }
-
-    public IntegerProperty comparisonsMadeProperty() {
-        return mComparisonsMade;
-    }
-
-    public int getArrayAccesses() {
-        return mArrayAccesses.get();
-    }
-
-    public IntegerProperty arrayAccessesProperty() {
-        return mArrayAccesses;
-    }
 }

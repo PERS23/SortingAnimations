@@ -1,25 +1,15 @@
 package github.com.PERS23.SortingAnimations;
 
 public enum SortAlgorithms {
-    BUBBLE(20, new BubbleSort(), "Bubble Sort"),
-    QUICK(1, new QuickSort(), "Quick Sort");
+    BUBBLE(new BubbleSort(), "Bubble Sort"),
+    CLASSIC_QUICK(new ClassicQuickSort(), "(Classic) Quick Sort");
 
     private String mName;
-    private int mDelayMS;
     private SortingAlgorithm mSorter;
 
-    private SortAlgorithms(int delayMS, SortingAlgorithm sorter, String name) {
-        mDelayMS = delayMS;
+    private SortAlgorithms(SortingAlgorithm sorter, String name) {
         mSorter = sorter;
         mName = name;
-    }
-
-    public int getDelayMS() {
-        return mDelayMS;
-    }
-
-    public void setDelayMS(int delayMS) {
-        mDelayMS = delayMS;
     }
 
     public SortingAlgorithm getSorter() {

@@ -17,7 +17,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainUI.fxml"), resourceBundle);
         Parent root = (Parent) loader.load();
 
-        primaryStage.setTitle("Sorting Animation");
+        primaryStage.setTitle("Sorting Animations");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
