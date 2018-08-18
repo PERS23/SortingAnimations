@@ -7,17 +7,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/* Pivot is non randomized, just taken from the end. */
 public class ClassicQuickSort extends SortingAlgorithm {
     @Override
     public void sort(SortingService context, List<Pair<Integer, Rectangle>> sortList, int delay) throws InterruptedException {
         quickSort(context, sortList, delay, 0, sortList.size() - 1);
     }
 
+    /* Explanation for the inner while loops - You have to arrange the sub-sequence so that the values are on the proper
+     * side of the pivot (which is the end value). So to do it in place you walk inward from both sides, stopping when
+     * you encounter one out of place with respect to the pivot. When both walks are stopped, you can swap the found
+     * values to put them on the correct side. You finally stop when the walks have crossed over, otherwise we would
+     * begin swapping to the wrong side. */
     private void quickSort(SortingService context, List<Pair<Integer, Rectangle>> sequence, int delay, int a, int b) throws InterruptedException {
         if (compare(context, a, b) >= 0) return; // Sub array is trivially sorted
 
         int left = a, right = b - 1;
-        int pivot = getKey(context, sequence, b);
+        int pivot = getKey(context, sequence, b); // Use element at the end of the array as the pivot
 
         while (compare(context, left, right) < 1) {
             // Scan until reaching value equal or larger than pivot (or right marker)
