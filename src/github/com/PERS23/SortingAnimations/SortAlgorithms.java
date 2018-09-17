@@ -3,7 +3,8 @@ package github.com.PERS23.SortingAnimations;
 public enum SortAlgorithms {
     BUBBLE(new BubbleSort(), "Bubble Sort"),
     CLASSIC_QUICK(new ClassicQuickSort(), "(Classic) Quick Sort"),
-    SELECTION(new SelectionSort(), "Selection Sort");
+    SELECTION(new SelectionSort(), "Selection Sort"),
+    SHELL(new ShellSort(), "Shell Sort");
 
     private String mName;
     private SortingAlgorithm mSorter;
