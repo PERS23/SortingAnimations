@@ -1,10 +1,9 @@
-package github.com.PERS23.SortingAnimations;
+package PERS23.SortingAnimations;
 
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;

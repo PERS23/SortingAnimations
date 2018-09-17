@@ -1,6 +1,5 @@
-package github.com.PERS23.SortingAnimations;
+package PERS23.SortingAnimations;
 
-import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
