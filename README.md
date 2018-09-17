@@ -9,4 +9,4 @@ Current algorithms done:
   - Quick Sort (Inplace, Non-randomized pivot)
   - Shell Sort
 
-![](https://github.com/PERS23/SortingAnimations/blob/master/exampleGIF.gif =1024×576)
+![](https://github.com/PERS23/SortingAnimations/blob/master/exampleGIF.gif)
